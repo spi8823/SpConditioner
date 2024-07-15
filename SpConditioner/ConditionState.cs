@@ -14,12 +14,12 @@ namespace SpConditioner
         public void OnIf(string statement)
         {
             stack.Push(new());
-            stack.Peek().Add(ConditionParser.ParseToExpression(statement));
+            stack.Peek().Add(StatementParser.ParseToBoolExpression(statement));
         }
 
         public void OnElseIf(string statement)
         {
-            stack.Peek().Add(ConditionParser.ParseToExpression(statement));
+            stack.Peek().Add(StatementParser.ParseToBoolExpression(statement));
         }
 
         public void OnElse()
@@ -49,7 +49,7 @@ namespace SpConditioner
                 }
             }
 
-            var func = ConditionParser.CompileExpression(expression);
+            var func = StatementParser.CompileBoolExpression(expression);
             return func.Invoke(variable);
         }
     }

@@ -1,15 +1,23 @@
 ﻿namespace SpConditioner
 {
-    public static class ConditionParser
+    public static class StatementParser
     {
-        public static Func<IVariableAccessor, bool> ParseStatement(string statement)
+        public static Func<IVariableAccessor, bool> ParseToBoolFunc(string statement)
         {
-            var expression = condition.Parse(statement);
+            var expression = ParseToBoolExpression(statement);
             return Lambda<Func<IVariableAccessor, bool>>(expression, variableParameter).Compile();
         }
+        public static Expression ParseToBoolExpression(string statement) => condition.Parse(statement);
 
-        public static Expression ParseToExpression(string statement) => condition.Parse(statement);
-        public static Func<IVariableAccessor, bool> CompileExpression(Expression expression) => Lambda<Func<IVariableAccessor, bool>>(expression, variableParameter).Compile();
+        public static Expression ParseToDoubleExpression(string statement) => addsub.Parse(statement);
+        public static Func<IVariableAccessor, double> ParseToDoubleFunc(string statement)
+        {
+            var expression = ParseToDoubleExpression(statement);
+            return Lambda<Func<IVariableAccessor, double>>(ParseToDoubleExpression(statement), variableParameter).Compile();
+        }
+
+        public static Func<IVariableAccessor, bool> CompileBoolExpression(Expression expression) => Lambda<Func<IVariableAccessor, bool>>(expression, variableParameter).Compile();
+        public static Func<IVariableAccessor, double> CompileDoubleExpression(Expression expression) => Lambda<Func<IVariableAccessor, double>>(expression, variableParameter).Compile();
 
         private static Parser<T> Chain<T, TOp>(Parser<TOp> op,
                                               Parser<T> operand,

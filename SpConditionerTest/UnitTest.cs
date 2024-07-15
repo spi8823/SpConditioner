@@ -12,7 +12,7 @@ namespace SpConditionerTest
         {
             void TestStatement(bool expected, string statement)
             {
-                var result = ConditionParser.ParseStatement(statement).Invoke(variableAccessor);
+                var result = StatementParser.ParseToBoolFunc(statement).Invoke(variableAccessor);
                 Assert.AreEqual(expected, result);
             }
 
