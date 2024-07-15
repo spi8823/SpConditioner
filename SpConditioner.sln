@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpConditioner", "SpConditioner\SpConditioner.csproj", "{38EB30A0-9CCE-440D-A6AE-F558E7665E21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpConditionerTest", "SpConditionerTest\SpConditionerTest.csproj", "{D1A0C46F-566B-4010-A8F0-0EEAB20DA768}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38EB30A0-9CCE-440D-A6AE-F558E7665E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38EB30A0-9CCE-440D-A6AE-F558E7665E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38EB30A0-9CCE-440D-A6AE-F558E7665E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38EB30A0-9CCE-440D-A6AE-F558E7665E21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A0C46F-566B-4010-A8F0-0EEAB20DA768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A0C46F-566B-4010-A8F0-0EEAB20DA768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A0C46F-566B-4010-A8F0-0EEAB20DA768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A0C46F-566B-4010-A8F0-0EEAB20DA768}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6AFB49CF-AEA7-4A67-8E89-C7A400162D04}
+	EndGlobalSection
+EndGlobal
