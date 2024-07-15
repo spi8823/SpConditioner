@@ -2,12 +2,12 @@
 {
     public static class StatementParser
     {
+        public static Expression ParseToBoolExpression(string statement) => condition.Parse(statement);
         public static Func<IVariableAccessor, bool> ParseToBoolFunc(string statement)
         {
             var expression = ParseToBoolExpression(statement);
             return Lambda<Func<IVariableAccessor, bool>>(expression, variableParameter).Compile();
         }
-        public static Expression ParseToBoolExpression(string statement) => condition.Parse(statement);
 
         public static Expression ParseToDoubleExpression(string statement) => addsub.Parse(statement);
         public static Func<IVariableAccessor, double> ParseToDoubleFunc(string statement)
