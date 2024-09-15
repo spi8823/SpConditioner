@@ -13,7 +13,7 @@ namespace SpConditionerTest
             void TestStatement(bool expected, string statement)
             {
                 var result = StatementParser.ParseToBoolFunc(statement).Invoke(variableAccessor);
-                Assert.AreEqual(expected, result);
+                Assert.AreEqual(expected, result, statement);
             }
 
             TestStatement(true, "T");
@@ -67,6 +67,12 @@ namespace SpConditionerTest
             TestStatement(true, "(2 > 1) || F");
             TestStatement(false, "(1 > 2) || F");
             TestStatement(false, "(2 > 1 && F) || F");
+
+            TestStatement(true, "(One + Two) == 3");
+            TestStatement(true, "(One + Two) * Three == 9");
+            TestStatement(false, "(One + Two) * Three == 8");
+            TestStatement(true, "(One + Two) * Three == (Two * Three) + 3");
+            TestStatement(false, "(One + Two) * Three == (Two * Three) + 2");
         }
 
         [TestMethod]
