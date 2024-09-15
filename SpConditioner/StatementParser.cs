@@ -41,6 +41,16 @@
             }
         }
 
+        private static Parser<Char> CharOrArray(string array)
+        {
+            Parser<char> result = Char(array[0]);
+            for(var i = 1 ; i < array.Length; i++)
+            {
+                result = result.Or(Char(array[i]));
+            }
+            return result;
+        }
+
         private static Parser<Expression> chain(Parser<ExpressionType> ope, Parser<Expression> operand) => ChainOperator(ope, operand, MakeBinary).Token();
 
         public static ParameterExpression variableParameter = Parameter(typeof(IVariableAccessor), "variable");
@@ -63,8 +73,9 @@
         private static Parser<ExpressionType> and = Ref(() => Operator(ExpressionType.AndAlso, "&&"));
         private static Parser<ExpressionType> or = Ref(() => Operator(ExpressionType.OrElse, "||"));
 
-        private static Parser<Expression> signature = from head in Letter.Or(Char('_')).AtLeastOnce().Text()
-                                                      from next in LetterOrDigit.Or(Char('_')).Many().Text().Token()
+        private const string signatureSpecialCharacters = "_＿&＆$＄#＃（）「」『』【】";
+        private static Parser<Expression> signature = from head in Letter.Or(CharOrArray(signatureSpecialCharacters)).AtLeastOnce().Text()
+                                                      from next in LetterOrDigit.Or(CharOrArray(signatureSpecialCharacters)).Many().Text().Token()
                                                       select Constant(head + next);
 
         private static Parser<Expression> doubleConst = from d in Parse.Decimal.Token()
