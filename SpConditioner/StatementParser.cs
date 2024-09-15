@@ -51,6 +51,8 @@
             return result;
         }
 
+        private static Parser<Expression> WhereType<T>(this Parser<Expression> parser) => parser.Where(e => e.Type == typeof(T));
+
         private static Parser<Expression> chain(Parser<ExpressionType> ope, Parser<Expression> operand) => ChainOperator(ope, operand, MakeBinary).Token();
 
         public static ParameterExpression variableParameter = Parameter(typeof(IVariableAccessor), "variable");
@@ -73,7 +75,7 @@
         private static Parser<ExpressionType> and = Ref(() => Operator(ExpressionType.AndAlso, "&&"));
         private static Parser<ExpressionType> or = Ref(() => Operator(ExpressionType.OrElse, "||"));
 
-        private const string signatureSpecialCharacters = "_＿&＆$＄#＃（）「」『』【】";
+        private const string signatureSpecialCharacters = "_＿$＄#＃（）「」『』【】";
         private static Parser<Expression> signature = from head in Letter.Or(CharOrArray(signatureSpecialCharacters)).AtLeastOnce().Text()
                                                       from next in LetterOrDigit.Or(CharOrArray(signatureSpecialCharacters)).Many().Text().Token()
                                                       select Constant(head + next);
@@ -89,11 +91,35 @@
         private static Parser<Expression> boolConst = Ref(() => trueConst.Or(falseConst));
         private static Parser<Expression> boolVariable = from variableSignature in signature.Token()
                                                          select Call(variableParameter, typeof(IVariableAccessor).GetMethod(nameof(IVariableAccessor.GetBool)), variableSignature);
-        private static Parser<Expression> boolOperand = Ref(() => boolConst.Or(boolVariable)).Named("bool Operand");
+        private static Parser<Expression> boolOperand = Ref(() => boolConst.Or(boolVariable)).Named("bool オペランド");
 
-        private static Parser<Expression> muldiv = Ref(() => chain(mul.Or(div), doubleOperand));
-        private static Parser<Expression> addsub = Ref(() => chain(add.Or(sub), muldiv));
-        private static Parser<Expression> compare = Ref(() => chain(equal.Or(notEqual).Or(greater).Or(greaterEqual).Or(less).Or(lessEqual), addsub));
-        private static Parser<Expression> condition = Ref(() => chain(and.Or(or), compare.Where(e => e.Type == typeof(bool)).Or(boolOperand)));
+        private static Parser<Expression> bracket(Parser<Expression> exp) => (from start in Char('(').Token()
+                                                                              from content in Ref(() => exp).Token()
+                                                                              from end in Char(')').Token()
+                                                                              select content).Named($"bracket ({exp})");
+
+        private static Parser<Expression> muldiv = Ref(()
+            => chain(
+                mul.Or(div),
+                doubleOperand.Or(bracket(addsub))
+                )).Named("MulDiv");
+
+        private static Parser<Expression> addsub = Ref(()
+            => chain(
+                add.Or(sub),
+                muldiv.Or(bracket(muldiv))
+                )).Named("AddSub");
+
+        private static Parser<Expression> compare = Ref(()
+            => chain(
+                equal.Or(notEqual).Or(greater).Or(greaterEqual).Or(less).Or(lessEqual),
+                addsub.Or(bracket(addsub))
+                )).Named("Compare");
+
+        private static Parser<Expression> condition = Ref(()
+            => chain(
+                and.Or(or),
+                compare.WhereType<bool>().Or(boolOperand).Or(bracket(condition))
+                )).Named("Condition");
     }
 }

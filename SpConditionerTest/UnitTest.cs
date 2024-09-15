@@ -47,6 +47,26 @@ namespace SpConditionerTest
             TestStatement(false, "F && T && T");
             TestStatement(false, "T && F && T");
             TestStatement(false, "T && T && F");
+
+            TestStatement(true, "(3 + 4) == 7");
+            TestStatement(false, "(3 + 4) == 8");
+            TestStatement(true, "(2 + 3) * 4 == 20");
+            TestStatement(false, "(2 + 3) * 4 == 21");
+            TestStatement(true, "2 * (3 + 4) == 14");
+            TestStatement(false, "2 * (3 + 4) == 15");
+            TestStatement(true, "18 == (3 + 3) * 3");
+            TestStatement(false, "17 == (3 + 3) * 3");
+            TestStatement(true, "4 + (2 + 6) * 5 == 4 * (5 + 6)");
+            TestStatement(false, "4 + (1 + 6) * 5 == 4 * (5 + 6)");
+
+            TestStatement(true, "(T || F) && T");
+            TestStatement(false, "(T && F) && T");
+            TestStatement(true, "F || (T || F)");
+            TestStatement(false, "F || (T && F)");
+
+            TestStatement(true, "(2 > 1) || F");
+            TestStatement(false, "(1 > 2) || F");
+            TestStatement(false, "(2 > 1 && F) || F");
         }
 
         [TestMethod]
