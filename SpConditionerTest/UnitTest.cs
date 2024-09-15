@@ -10,6 +10,25 @@ namespace SpConditionerTest
         [TestMethod]
         public void TestStatements()
         {
+            #region For README
+            var statement = "2 * 3 == 6";
+            var result = StatementParser.ParseToBool(statement);
+            Assert.AreEqual(result, true);  // 2 * 3 == 6 => true
+
+            var dic = new VariableDictionary();
+            dic["two"] = 2;
+            dic["three"] = 3;
+            statement = "two + three == 5";
+            result = StatementParser.ParseToBool(statement, dic);
+            Assert.AreEqual(result, true);  // 2 + 3 == 5 => true
+
+            dic["flag_1"] = true;
+            dic["flag_2"] = false;
+            statement = "flag_1 && flag_2";
+            result = StatementParser.ParseToBool(statement, dic);
+            Assert.AreEqual(result, false); // true && false => false
+            #endregion
+
             void TestStatement(bool expected, string statement)
             {
                 var result = StatementParser.ParseToBoolFunc(statement).Invoke(variableAccessor);

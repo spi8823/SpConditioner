@@ -9,6 +9,12 @@
             return Lambda<Func<IVariableAccessor, bool>>(expression, variableParameter).Compile();
         }
 
+        public static bool ParseToBool(string statement, IVariableAccessor variable = null)
+        {
+            var func = ParseToBoolFunc(statement);
+            return func.Invoke(variable);
+        }
+
         public static Expression ParseToDoubleExpression(string statement) => addsub.Parse(statement);
         public static Func<IVariableAccessor, double> ParseToDoubleFunc(string statement)
         {

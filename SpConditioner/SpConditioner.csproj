@@ -4,10 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>Parse;Parser;Statement;Condition</PackageTags>
+    <PackageId>$(AssemblyName)</PackageId>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Sprache" Version="2.3.1" />
+	  <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
