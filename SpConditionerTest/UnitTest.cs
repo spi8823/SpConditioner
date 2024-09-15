@@ -38,6 +38,15 @@ namespace SpConditionerTest
             TestStatement(true, "T");
             TestStatement(false, "F");
 
+            TestStatement(false, "!T");
+            TestStatement(true, "!F");
+            TestStatement(true, "!T || T");
+
+            TestStatement(true, "!(F || T) || T");
+            TestStatement(false, "!(F || T) || F");
+            TestStatement(true, "!(F && T) || F");
+            TestStatement(false, "!(T && T) || F");
+
             TestStatement(true, "T && T");
             TestStatement(false, "T && F");
             TestStatement(true, "T || F");
@@ -66,6 +75,9 @@ namespace SpConditionerTest
             TestStatement(false, "F && T && T");
             TestStatement(false, "T && F && T");
             TestStatement(false, "T && T && F");
+
+            TestStatement(true, "!(1 > Two)");
+            TestStatement(false, "!(2 > One)");
 
             TestStatement(true, "(3 + 4) == 7");
             TestStatement(false, "(3 + 4) == 8");

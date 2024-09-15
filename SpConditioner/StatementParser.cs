@@ -76,6 +76,9 @@ namespace SpConditioner
         private static Parser<Expression> boolVariable = from variableSignature in signature.Token()
                                                          select Call(variableParameter, typeof(IVariableAccessor).GetMethod(nameof(IVariableAccessor.GetBool)), variableSignature);
         private static Parser<Expression> boolOperand = Ref(() => boolConst.Or(boolVariable)).Named("bool オペランド");
+        private static Parser<Expression> boolOrNot(Parser<Expression> exp) => (from not in Char('!').Token()
+                                                                             from b in exp.Token()
+                                                                             select Not(b)).Or(exp);
         #endregion
 
         #region Double
@@ -112,7 +115,7 @@ namespace SpConditioner
         private static Parser<Expression> condition = Ref(()
             => chain(
                 and.Or(or),
-                compare.WhereType<bool>().Or(boolOperand).Or(bracket(condition))
+                boolOrNot(compare.WhereType<bool>().Or(boolOperand)).Or(boolOrNot(bracket(condition)))
                 )).Named("Condition");
         #endregion
     }
